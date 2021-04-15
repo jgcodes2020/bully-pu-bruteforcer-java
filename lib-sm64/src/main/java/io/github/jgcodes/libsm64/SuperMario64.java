@@ -1,4 +1,4 @@
-package io.github.jgcodes.bitfs0x;
+package io.github.jgcodes.libsm64;
 
 import com.sun.jna.Library;
 

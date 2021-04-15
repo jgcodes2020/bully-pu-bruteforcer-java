@@ -1,8 +1,9 @@
-package io.github.jgcodes.bitfs0x;
+package io.github.jgcodes.libsm64;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
+import io.github.jgcodes.libsm64.util.MemoryRegion;
 
 import java.io.FileNotFoundException;
 import java.nio.file.FileSystems;
@@ -16,8 +17,8 @@ public class Game {
      * This version has a few extra glitches that later versions lack.
      */
     JP(
-      new MemoryRegion(1302528L, 2836576L),
-      new MemoryRegion(14045184L, 4897408L)
+      new MemoryRegion(1302528, 2836576),
+      new MemoryRegion(14045184, 4897408)
     ),
     /**
      * Represents the US version of SM64.<br>
@@ -25,8 +26,8 @@ public class Game {
      * but for the most part is basically as glitchy.
      */
     US(
-      new MemoryRegion(1294336L, 2406112L),
-      new MemoryRegion(13594624L, 4897632L)
+      new MemoryRegion(1294336, 2406112),
+      new MemoryRegion(13594624, 4897632)
     );
 
     private final MemoryRegion[] segments;
@@ -39,7 +40,6 @@ public class Game {
       return segments;
     }
   }
-  private static PathMatcher isDLL = FileSystems.getDefault().getPathMatcher("glob:*.dll");
   // Proxy interfaces
   public final SuperMario64 sm64;
   public final NativeLibrary sm64Lib;
@@ -47,9 +47,9 @@ public class Game {
   final Version version;
 
   public Game(Version version, Path dllPath) throws FileNotFoundException {
-    if (!isDLL.matches(dllPath)) throw new FileNotFoundException("File is not a DLL");
+    if (!dllPath.getFileName().toString().endsWith(".dll")) throw new FileNotFoundException("File is not a DLL");
     this.version = version;
-    // Load sm64_jp.dll
+    // Load sm64_jp.dll or sm64_us.dll
     System.setProperty("jna.library.path", dllPath.getParent().toAbsolutePath().toString());
     final String dllName = dllPath.getFileName().toString();
     sm64 = Native.load(dllName, SuperMario64.class);

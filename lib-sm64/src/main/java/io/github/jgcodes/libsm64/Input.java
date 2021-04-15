@@ -1,4 +1,4 @@
-package io.github.jgcodes.bitfs0x;
+package io.github.jgcodes.libsm64;
 
 /**
  * A set of inputs, which can be sourced from a Mupen64 movie and written to SM64.
@@ -14,12 +14,6 @@ public record Input(short buttons, byte joyX, byte joyY) {
       joyX & 0xFF,
       joyY & 0xFF
     );
-  }
-
-  public Input(short buttons, byte joyX, byte joyY) {
-    this.buttons = buttons;
-    this.joyX = joyX;
-    this.joyY = joyY;
   }
 
   /**
